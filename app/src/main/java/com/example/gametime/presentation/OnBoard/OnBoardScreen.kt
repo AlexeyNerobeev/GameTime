@@ -42,8 +42,6 @@ fun OnBoardScreen(navController: NavController, vm: OnBoardVM = hiltViewModel())
                 .padding(bottom = 45.dp),
                 horizontalAlignment = Alignment.CenterHorizontally) {
 
-
-
                 Text(text = "Skip",
                     style = Theme.typography.captionSemibold,
                     color = Color(0xFFFA5075),
