@@ -10,17 +10,34 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.gametime.Navigation
 import com.example.gametime.R
 import com.example.uikit.White
 
+//25.03.2026
+//Алексей
+//метод для отображения стратового экрана. Принимает контроллер навигации, viewmodel
 @Composable
-fun SplashScreen(navController: NavController) {
+fun SplashScreen(navController: NavController, vm: SplashVM = hiltViewModel()) {
+    val state = vm.state.value
+    LaunchedEffect(key1 = state.onBoardComplete, key2 = state.isRegistered) {
+        if(state.onBoardComplete){
+            navController.navigate(Navigation.SignIn)
+        } else{
+            navController.navigate(Navigation.OnBoard)
+        }
+        if(state.isRegistered){
+            navController.navigate(Navigation.Landing)
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
