@@ -22,10 +22,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -35,7 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.gametime.Navigation
 import com.example.gametime.R
+import com.example.gametime.common.SuccessfulMessage
 import com.example.uikit.Black
 import com.example.uikit.Buttons.MainButton
 import com.example.uikit.CustomCheckBox
@@ -53,6 +57,13 @@ fun ScheduleGameScreen(navController: NavController, vm: ScheduleVM = hiltViewMo
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
+            .blur(
+                if (state.isComplete) {
+                    14.dp
+                } else {
+                    0.dp
+                }
+            )
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -180,11 +191,12 @@ fun ScheduleGameScreen(navController: NavController, vm: ScheduleVM = hiltViewMo
                     CustomDatePicker(
                         title = "FROM",
                         value = dateFrom,
-                        date = "MON, NOV 4,2019"
+                        date = state.dateFrom
                     )
-                    Row(verticalAlignment = Alignment.CenterVertically,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .clickable{
+                            .clickable {
 
                             }) {
                         Text(
@@ -212,11 +224,12 @@ fun ScheduleGameScreen(navController: NavController, vm: ScheduleVM = hiltViewMo
                     CustomDatePicker(
                         title = "TO",
                         value = dateTo,
-                        date = "MON, NOV 9,2019"
+                        date = state.dateTo
                     )
-                    Row(verticalAlignment = Alignment.CenterVertically,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .clickable{
+                            .clickable {
 
                             }) {
                         Text(
@@ -234,14 +247,18 @@ fun ScheduleGameScreen(navController: NavController, vm: ScheduleVM = hiltViewMo
                     }
                 }
             }
-            Box(modifier = Modifier
-                .fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter){
-                Column(modifier = Modifier
-                    .padding(bottom = 25.dp)
-                    .padding(horizontal = 30.dp)
-                    .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(bottom = 25.dp)
+                        .padding(horizontal = 30.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     InputTF(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.description,
@@ -249,25 +266,31 @@ fun ScheduleGameScreen(navController: NavController, vm: ScheduleVM = hiltViewMo
                         placeholder = "Description",
                         withTrailingIcon = false
                     )
-                    Row(modifier = Modifier
-                        .padding(top = 55.dp)
-                        .fillMaxWidth(),
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 55.dp)
+                            .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(text = "REMINDERS",
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "REMINDERS",
                             style = Theme.typography.caption2Regular,
-                            color = Color(0xFFFA5075))
+                            color = Color(0xFFFA5075)
+                        )
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             CustomCheckBox(
                                 modifier = Modifier.size(14.dp),
                                 value = state.notification,
-                                onValueChange = {vm.onEvent(ScheduleEvent.ChangeNotification)}
+                                onValueChange = { vm.onEvent(ScheduleEvent.ChangeNotification) }
                             )
-                            Text(text = "Notification",
+                            Text(
+                                text = "Notification",
                                 color = Black,
                                 style = Theme.typography.caption2Regular,
                                 modifier = Modifier
-                                    .padding(start = 9.dp))
+                                    .padding(start = 9.dp)
+                            )
                         }
                     }
                     MainButton(
@@ -280,5 +303,14 @@ fun ScheduleGameScreen(navController: NavController, vm: ScheduleVM = hiltViewMo
                 }
             }
         }
+    }
+    if (state.isComplete) {
+        SuccessfulMessage(
+            onDismiss = { navController.navigate(Navigation.Landing) },
+            title = "Published\nSuccessful",
+            text = "Wanna change/edit your\nscheduled game before it\nbegins?",
+            buttonText = "Statistics",
+            onButtonClick = { navController.navigate(Navigation.Landing) }
+        )
     }
 }
