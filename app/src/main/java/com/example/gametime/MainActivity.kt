@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.gametime.presentation.Landing.LandingScreen
 import com.example.gametime.presentation.OnBoard.OnBoardScreen
 import com.example.gametime.presentation.Registration.RegistrationScreen
+import com.example.gametime.presentation.ScheduleGame.ScheduleGameScreen
 import com.example.gametime.presentation.SignIn.SignInScreen
 import com.example.gametime.presentation.Splash.SplashScreen
 import com.example.gametime.ui.theme.GameTimeTheme
@@ -48,6 +49,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<Navigation.Landing> {
                         LandingScreen(navController)
+                    }
+                    composable<Navigation.ScheduleGame> {
+                        ScheduleGameScreen(navController)
                     }
                 }
             }

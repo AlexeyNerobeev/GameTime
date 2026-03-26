@@ -179,7 +179,7 @@ fun LandingScreen(navController: NavController, vm: LandingVM = hiltViewModel())
                     onDiscoverClick = { },
                     onChatClick = { },
                     onProfileClick = { },
-                    onCalendarClick = { }
+                    onCalendarClick = { navController.navigate(Navigation.ScheduleGame)}
                 )
             }
         }
@@ -195,7 +195,7 @@ fun LandingScreen(navController: NavController, vm: LandingVM = hiltViewModel())
             RowData(
                 icon = com.example.uikit.R.drawable.calendar_icon,
                 text = "Schedule",
-                onClick = {},
+                onClick = {navController.navigate(Navigation.ScheduleGame)},
                 modifier = Modifier
                     .padding(top = 34.dp)
             ),

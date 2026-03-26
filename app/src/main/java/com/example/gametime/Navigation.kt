@@ -21,4 +21,7 @@ sealed class Navigation {
 
     @Serializable
     data object Landing: Navigation()
+
+    @Serializable
+    data object ScheduleGame: Navigation()
 }
