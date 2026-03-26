@@ -47,7 +47,7 @@ android {
 dependencies {
 
     //uikit
-    implementation("com.github.AlexeyNerobeev:GameTimeUIKIT:1.0.0")
+    implementation("com.github.AlexeyNerobeev:GameTimeUIKIT:1.0.3")
 
     //network
     implementation("com.github.AlexeyNerobeev:GameTimeNetwork:1.0.0")
