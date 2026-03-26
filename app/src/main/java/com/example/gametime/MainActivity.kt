@@ -14,6 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.example.gametime.presentation.CombatInformation.CombatInformationScreen
+import com.example.gametime.presentation.DiscoverCombats.DiscoverCombatsScreen
 import com.example.gametime.presentation.Landing.LandingScreen
 import com.example.gametime.presentation.OnBoard.OnBoardScreen
 import com.example.gametime.presentation.Registration.RegistrationScreen
@@ -52,6 +55,13 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<Navigation.ScheduleGame> {
                         ScheduleGameScreen(navController)
+                    }
+                    composable<Navigation.DiscoverCombats> {
+                        DiscoverCombatsScreen(navController)
+                    }
+                    composable<Navigation.CombatInfo> { backStackEntry ->
+                        val route = backStackEntry.toRoute<Navigation.CombatInfo>()
+                        CombatInformationScreen(navController, route.value)
                     }
                 }
             }

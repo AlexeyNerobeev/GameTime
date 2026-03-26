@@ -24,4 +24,10 @@ sealed class Navigation {
 
     @Serializable
     data object ScheduleGame: Navigation()
+
+    @Serializable
+    data object DiscoverCombats: Navigation()
+
+    @Serializable
+    data class CombatInfo(val value: Int): Navigation()
 }

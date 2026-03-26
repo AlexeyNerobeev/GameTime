@@ -79,7 +79,9 @@ fun LandingScreen(navController: NavController, vm: LandingVM = hiltViewModel())
                     "challenges and earn cash with\n" +
                     "game points ",
             image = R.drawable.discovercombats_image,
-            onCLick = { },
+            onCLick = {
+                navController.navigate(Navigation.DiscoverCombats)
+            },
             modifier = Modifier
                 .padding(top = 10.dp)
         ),
@@ -176,7 +178,7 @@ fun LandingScreen(navController: NavController, vm: LandingVM = hiltViewModel())
                 BottomBar(
                     currentScreen = 0,
                     onStatisticsClick = { },
-                    onDiscoverClick = { },
+                    onDiscoverClick = { navController.navigate(Navigation.DiscoverCombats) },
                     onChatClick = { },
                     onProfileClick = { },
                     onCalendarClick = { navController.navigate(Navigation.ScheduleGame)}
