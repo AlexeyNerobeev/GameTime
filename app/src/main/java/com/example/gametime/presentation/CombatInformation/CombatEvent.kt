@@ -6,4 +6,5 @@ package com.example.gametime.presentation.CombatInformation
 sealed class CombatEvent {
     data class GetInfo(val value: Int): CombatEvent()
     data object ChangeNotification: CombatEvent()
+    data object JoinCombat: CombatEvent()
 }

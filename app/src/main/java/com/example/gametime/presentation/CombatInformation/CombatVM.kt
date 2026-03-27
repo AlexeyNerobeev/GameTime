@@ -42,6 +42,12 @@ class CombatVM @Inject constructor(
                     notification = !state.value.notification
                 )
             }
+
+            CombatEvent.JoinCombat -> {
+                _state.value = state.value.copy(
+                    isJoin = true
+                )
+            }
         }
     }
 }

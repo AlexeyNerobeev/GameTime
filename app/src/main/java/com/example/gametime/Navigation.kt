@@ -30,4 +30,10 @@ sealed class Navigation {
 
     @Serializable
     data class CombatInfo(val value: Int): Navigation()
+
+    @Serializable
+    data object PlayerInfo: Navigation()
+
+    @Serializable
+    data object Statistics: Navigation()
 }

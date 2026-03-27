@@ -56,7 +56,8 @@ fun GameBox(
     ) {
         Row(
             modifier = Modifier
-                .padding(vertical = 10.dp)
+                .padding(top = 14.dp)
+                .padding(bottom = 11.dp)
                 .padding(start = 16.dp)
                 .padding(end = 9.dp)
                 .fillMaxWidth(),
@@ -64,7 +65,7 @@ fun GameBox(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Column {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Box(
                         modifier = Modifier
                             .size(27.dp)

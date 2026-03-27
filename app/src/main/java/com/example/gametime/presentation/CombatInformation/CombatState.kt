@@ -11,5 +11,6 @@ data class CombatState(
     val category: String = "",
     val dateFrom: String = "",
     val dateTo: String = "",
-    val notification: Boolean = true
+    val notification: Boolean = true,
+    val isJoin: Boolean = false
 )

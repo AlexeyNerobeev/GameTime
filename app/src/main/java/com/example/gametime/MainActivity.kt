@@ -19,10 +19,12 @@ import com.example.gametime.presentation.CombatInformation.CombatInformationScre
 import com.example.gametime.presentation.DiscoverCombats.DiscoverCombatsScreen
 import com.example.gametime.presentation.Landing.LandingScreen
 import com.example.gametime.presentation.OnBoard.OnBoardScreen
+import com.example.gametime.presentation.PlayerInformation.PlayerInformationScreen
 import com.example.gametime.presentation.Registration.RegistrationScreen
 import com.example.gametime.presentation.ScheduleGame.ScheduleGameScreen
 import com.example.gametime.presentation.SignIn.SignInScreen
 import com.example.gametime.presentation.Splash.SplashScreen
+import com.example.gametime.presentation.Statistics.StatisticsScreen
 import com.example.gametime.ui.theme.GameTimeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -62,6 +64,12 @@ class MainActivity : ComponentActivity() {
                     composable<Navigation.CombatInfo> { backStackEntry ->
                         val route = backStackEntry.toRoute<Navigation.CombatInfo>()
                         CombatInformationScreen(navController, route.value)
+                    }
+                    composable<Navigation.PlayerInfo> {
+                        PlayerInformationScreen(navController)
+                    }
+                    composable<Navigation.Statistics> {
+                        StatisticsScreen(navController)
                     }
                 }
             }

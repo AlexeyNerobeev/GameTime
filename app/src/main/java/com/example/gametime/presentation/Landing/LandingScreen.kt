@@ -68,7 +68,7 @@ fun LandingScreen(navController: NavController, vm: LandingVM = hiltViewModel())
             text = "All data from previous and \n" +
                     "upcoming games can be found here ",
             image = R.drawable.statistics_image,
-            onCLick = { },
+            onCLick = { navController.navigate(Navigation.Statistics) },
             modifier = Modifier
                 .padding(top = 10.dp)
         ),
@@ -204,7 +204,7 @@ fun LandingScreen(navController: NavController, vm: LandingVM = hiltViewModel())
             RowData(
                 icon = com.example.uikit.R.drawable.statistics_icon,
                 text = "Statistics",
-                onClick = {},
+                onClick = {navController.navigate(Navigation.Statistics)},
                 modifier = Modifier
                     .padding(top = 34.dp)
             ),

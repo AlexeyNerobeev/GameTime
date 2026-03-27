@@ -178,7 +178,7 @@ fun DiscoverCombatsScreen(navController: NavController, vm: DiscoverVM = hiltVie
                         price = it.winingPrice.toString(),
                         modifier = Modifier
                             .clickable{
-
+                                navController.navigate(Navigation.CombatInfo(it.id))
                             }
                     )
                 }
@@ -196,13 +196,21 @@ fun DiscoverCombatsScreen(navController: NavController, vm: DiscoverVM = hiltVie
                             name = "Scott Brown",
                             crown = "Gold Player",
                             status = "Online",
-                            category = "Action, Soccer..."
+                            category = "Action, Soccer...",
+                            modifier = Modifier
+                                .clickable{
+                                    navController.navigate(Navigation.PlayerInfo)
+                                }
                         )
                         UserCard(
                             name = "Teslar fullar",
                             crown = "Silver Player",
                             status = "Away",
-                            category = "Action, Soccer..."
+                            category = "Action, Soccer...",
+                            modifier = Modifier
+                                .clickable{
+                                    navController.navigate(Navigation.PlayerInfo)
+                                }
                         )
                     }
                     DiscoverRow(
@@ -219,7 +227,7 @@ fun DiscoverCombatsScreen(navController: NavController, vm: DiscoverVM = hiltVie
                         price = it.winingPrice.toString(),
                         modifier = Modifier
                             .clickable{
-
+                                navController.navigate(Navigation.CombatInfo(it.id))
                             }
                     )
                 }
@@ -235,7 +243,7 @@ fun DiscoverCombatsScreen(navController: NavController, vm: DiscoverVM = hiltVie
             contentAlignment = Alignment.BottomCenter){
             BottomBar(
                 currentScreen = 2,
-                onStatisticsClick = {  },
+                onStatisticsClick = { navController.navigate(Navigation.Statistics) },
                 onDiscoverClick = {  },
                 onChatClick = {  },
                 onProfileClick = {  },
