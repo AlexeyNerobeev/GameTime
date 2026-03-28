@@ -486,6 +486,8 @@ fun CombatInformationScreen(navController: NavController, id: Int, vm: CombatVM 
             onButtonClick = {
                 if(state.category == "Image") {
                     navController.navigate(Navigation.GameImage(id, state.price))
+                } else{
+                    navController.navigate(Navigation.GameCircle(id, state.price))
                 }
             }
         )

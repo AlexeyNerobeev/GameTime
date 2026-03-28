@@ -39,4 +39,7 @@ sealed class Navigation {
 
     @Serializable
     data class GameImage(val gameId: Int, val winningPrice: Int): Navigation()
+
+    @Serializable
+    data class GameCircle(val gameId: Int, val winningPrice: Int): Navigation()
 }
