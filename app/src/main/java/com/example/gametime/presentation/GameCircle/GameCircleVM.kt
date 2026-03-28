@@ -1,14 +1,18 @@
 package com.example.gametime.presentation.GameCircle
 
-import android.R.attr.height
-import android.R.attr.width
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.gametime.domain.usecase.LoadCurrentUserUseCase
+import com.example.gametime.presentation.GameCircle.common.CircleConfig
 import com.example.gametime.presentation.GameCircle.common.CircleItem
+import com.example.network.domain.model.Statistics
 import com.example.network.domain.usecase.SaveGameResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 //28.03.2026
@@ -19,61 +23,171 @@ import javax.inject.Inject
 class GameCircleVM @Inject constructor(
     private val loadCurrentUserUseCase: LoadCurrentUserUseCase,
     private val saveGameResultUseCase: SaveGameResultUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _state = mutableStateOf(GameCircleState())
     val state: State<GameCircleState> = _state
 
-    fun onEvent(event: GameCircleEvent){
-        when(event){
-            is GameCircleEvent.OnCircleClick -> {
-                val current = _state.value
-                if (current.selected.contains(event.id)) return
-                val newSelected = current.selected + event.id
+    init {
+        viewModelScope.launch {
+            while (state.value.seconds > 0) {
+                delay(1000)
+                val seconds = state.value.seconds - 1
                 _state.value = state.value.copy(
-                    selected = newSelected
+                    seconds = seconds
                 )
-                checkWin(newSelected)
             }
-            is GameCircleEvent.StartGame -> {
-                val base = listOf(
-                    CircleItem(0, 150, 15, 0),
-                    CircleItem(1, 110, 6, 1),
-                    CircleItem(2, 89, 6, 2),
-                    CircleItem(3, 72, 3, 3),
-                    CircleItem(4, 61, 3, 4),
-                    CircleItem(5, 49, 3, 5),
-                    CircleItem(6, 38, 3, 6),
-                    CircleItem(7, 17, 3, 7),
+            if (state.value.seconds == 0) {
+                _state.value = state.value.copy(
+                    gameEnd = true
                 )
+                saveResult("lose")
+            }
+        }
+    }
 
-                val randomized = base.map {
-                    it.copy(
-                        x = (0..(width - it.size)).random().toFloat(),
-                        y = (0..(height - it.size)).random().toFloat()
-                    )
-                }
+    fun onEvent(event: GameCircleEvent) {
+        when (event) {
+            is GameCircleEvent.InitGame -> {
+                initGame(event.centerX, event.centerY)
+            }
 
-                _state.value = GameCircleState(
-                    circles = randomized,
-                    isStarted = true
+            is GameCircleEvent.CircleClicked -> {
+                handleClick(event.circleId)
+            }
+
+            GameCircleEvent.Surrender -> {
+                _state.value = _state.value.copy(
+                    gameEnd = true
+                )
+                saveResult("lose")
+            }
+
+            is GameCircleEvent.GetGameInfo -> {
+                _state.value = state.value.copy(
+                    gameId = event.id,
+                    winningPrice = event.winningPrice
                 )
             }
         }
     }
 
-    private fun checkWin(selected: List<Int>) {
-        val circles = _state.value.circles
+    private fun initGame(centerX: Float, centerY: Float) {
 
-        val selectedCircles = selected.map { id ->
-            circles.first { it.id == id }
+        val circleConfigs = listOf(
+            CircleConfig(350f, 30f),
+            CircleConfig(270f, 12f),
+            CircleConfig(228f, 12f),
+            CircleConfig(194f, 6f),
+            CircleConfig(172f, 6f),
+            CircleConfig(148f, 6f),
+            CircleConfig(126f, 6f),
+            CircleConfig(104f, 6f),
+            CircleConfig(84f, 6f)
+        )
+
+        val configs = circleConfigs.sortedByDescending { it.size }
+
+        val solvedCircles = configs.mapIndexed { i, config ->
+            CircleItem(
+                id = i,
+                size = config.size,
+                border = config.border,
+                x = centerX,
+                y = centerY,
+                isPlaced = true
+            )
         }
 
-        val isCorrect = selectedCircles
-            .zipWithNext()
-            .all { (a, b) -> a.size >= b.size }
+        _state.value = GameCircleState(
+            circles = solvedCircles,
+            nextExpectedSize = configs.first().size,
+            placedCount = 0,
+            isWin = false,
+            startX = centerX,
+            startY = centerY,
+            isPreview = true
+        )
 
-        if (selected.size == circles.size && isCorrect) {
-            _state.value = _state.value.copy(isWin = true)
+        viewModelScope.launch {
+
+            delay(800)
+
+            val radiusBase = 420f
+
+            val offsets = List(configs.size) {
+                val angle = Math.random() * 2 * Math.PI
+                val radius = (180..radiusBase.toInt()).random()
+
+                (kotlin.math.cos(angle) * radius).toFloat() to
+                        (kotlin.math.sin(angle) * radius).toFloat()
+            }
+
+            val scattered = configs.mapIndexed { i, config ->
+                CircleItem(
+                    id = i,
+                    size = config.size,
+                    border = config.border,
+                    x = centerX + offsets[i].first,
+                    y = centerY + offsets[i].second,
+                    isPlaced = false
+                )
+            }
+
+            _state.value = _state.value.copy(
+                circles = scattered,
+                isPreview = false
+            )
+        }
+    }
+
+    private fun handleClick(circleId: Int) {
+
+        val current = _state.value
+        val circles = current.circles.toMutableList()
+
+        val index = circles.indexOfFirst { it.id == circleId }
+        if (index == -1) return
+
+        val circle = circles[index]
+
+        if (circle.isPlaced) return
+        if (circle.size != current.nextExpectedSize) return
+
+        circles[index] = circle.copy(
+            x = current.startX,
+            y = current.startY,
+            isPlaced = true
+        )
+
+        val remaining = circles.filter { !it.isPlaced }
+        val nextSize = remaining.maxByOrNull { it.size }?.size ?: 0f
+
+        val newPlaced = current.placedCount + 1
+        val win = remaining.isEmpty()
+
+        _state.value = current.copy(
+            circles = circles,
+            nextExpectedSize = nextSize,
+            placedCount = newPlaced,
+            isWin = win
+        )
+
+        if (win) {
+            saveResult("win")
+        }
+    }
+
+    private fun saveResult(status: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val userId = loadCurrentUserUseCase.invoke()
+            saveGameResultUseCase.invoke(
+                Statistics(
+                    gameId = state.value.gameId,
+                    result = status,
+                    userId = userId,
+                    totalWinning = state.value.winningPrice
+                )
+            )
         }
     }
 }

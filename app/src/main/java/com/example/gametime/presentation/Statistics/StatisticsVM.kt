@@ -72,7 +72,7 @@ class StatisticsVM @Inject constructor(
                     earnings += it.totalWinning
                     totalWins++
                     val gameCategory = getGameInfoUseCase.invoke(it.gameId).category
-                    if(gameCategory == "circle"){
+                    if(gameCategory == "Circle"){
                         winsInCircle++
                     } else{
                         winsInImage++
@@ -80,8 +80,8 @@ class StatisticsVM @Inject constructor(
                 }
             }
             val totalGames = statistics.size
-            val winsInCirclePercent = (winsInCircle.toFloat() / totalGames * 100)
-            val winsInImagePercent = (winsInImage.toFloat() / totalGames * 100)
+            val winsInCirclePercent = (winsInCircle.toFloat() / totalGames)
+            val winsInImagePercent = (winsInImage.toFloat() / totalGames)
             val totalWinsPercent = (totalWins.toFloat() / totalGames * 100)
             _state.value = state.value.copy(
                 earnings = earnings,
