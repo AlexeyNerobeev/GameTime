@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.gametime.presentation.CombatInformation.CombatInformationScreen
 import com.example.gametime.presentation.DiscoverCombats.DiscoverCombatsScreen
+import com.example.gametime.presentation.GameImage.GameImageScreen
 import com.example.gametime.presentation.Landing.LandingScreen
 import com.example.gametime.presentation.OnBoard.OnBoardScreen
 import com.example.gametime.presentation.PlayerInformation.PlayerInformationScreen
@@ -70,6 +71,10 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<Navigation.Statistics> {
                         StatisticsScreen(navController)
+                    }
+                    composable<Navigation.GameImage> { backStackEntry ->
+                        val route = backStackEntry.toRoute<Navigation.GameImage>()
+                        GameImageScreen(navController, route.gameId, route.winningPrice)
                     }
                 }
             }

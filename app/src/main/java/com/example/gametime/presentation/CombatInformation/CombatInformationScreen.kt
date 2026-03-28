@@ -364,7 +364,8 @@ fun CombatInformationScreen(navController: NavController, id: Int, vm: CombatVM 
                                 Row(
                                     modifier = Modifier
                                         .padding(top = 14.dp)
-                                        .fillMaxWidth()
+                                        .fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Column {
                                         Text(
@@ -398,7 +399,8 @@ fun CombatInformationScreen(navController: NavController, id: Int, vm: CombatVM 
                                 Row(
                                     modifier = Modifier
                                         .padding(top = 23.dp)
-                                        .fillMaxWidth()
+                                        .fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Column {
                                         Text(
@@ -481,9 +483,11 @@ fun CombatInformationScreen(navController: NavController, id: Int, vm: CombatVM 
                     "Join Combat",
             text = "Wanna know more\ninformation bout’ this\ncompetition?",
             buttonText = "Discover combats",
-            onButtonClick = { navController.navigate(Navigation.DiscoverCombats) {
-                popUpTo(0)
-            } }
+            onButtonClick = {
+                if(state.category == "Image") {
+                    navController.navigate(Navigation.GameImage(id, state.price))
+                }
+            }
         )
     }
 }

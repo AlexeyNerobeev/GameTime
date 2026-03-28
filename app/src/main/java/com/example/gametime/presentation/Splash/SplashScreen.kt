@@ -21,6 +21,8 @@ import androidx.navigation.NavController
 import com.example.gametime.Navigation
 import com.example.gametime.R
 import com.example.uikit.White
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.time.delay
 
 //25.03.2026
 //Алексей
@@ -29,6 +31,7 @@ import com.example.uikit.White
 fun SplashScreen(navController: NavController, vm: SplashVM = hiltViewModel()) {
     val state = vm.state.value
     LaunchedEffect(key1 = state.onBoardComplete, key2 = state.isRegistered) {
+        delay(3000)
         if(state.onBoardComplete){
             navController.navigate(Navigation.SignIn)
         } else{

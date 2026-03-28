@@ -247,7 +247,7 @@ fun DiscoverCombatsScreen(navController: NavController, vm: DiscoverVM = hiltVie
                 onDiscoverClick = {  },
                 onChatClick = {  },
                 onProfileClick = {  },
-                onCalendarClick = { navController.navigate(Navigation.Landing) }
+                onCalendarClick = { navController.navigate(Navigation.ScheduleGame) }
             )
         }
     }

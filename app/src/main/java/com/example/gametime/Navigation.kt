@@ -36,4 +36,7 @@ sealed class Navigation {
 
     @Serializable
     data object Statistics: Navigation()
+
+    @Serializable
+    data class GameImage(val gameId: Int, val winningPrice: Int): Navigation()
 }

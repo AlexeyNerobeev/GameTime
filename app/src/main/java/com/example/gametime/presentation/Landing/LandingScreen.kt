@@ -177,7 +177,7 @@ fun LandingScreen(navController: NavController, vm: LandingVM = hiltViewModel())
             ) {
                 BottomBar(
                     currentScreen = 0,
-                    onStatisticsClick = { },
+                    onStatisticsClick = { navController.navigate(Navigation.Statistics)},
                     onDiscoverClick = { navController.navigate(Navigation.DiscoverCombats) },
                     onChatClick = { },
                     onProfileClick = { },

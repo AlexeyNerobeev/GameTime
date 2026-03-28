@@ -9,5 +9,6 @@ data class StatisticsState(
     val earnings: Int = 0,
     val winsInImagePercent: Float = 0f,
     val winsInCirclePercent: Float = 0f,
-    val totalWinsPercent: Float = 0f
+    val totalWinsPercent: Float = 0f,
+    val lastWeekGames: List<Float> = listOf()
 )
