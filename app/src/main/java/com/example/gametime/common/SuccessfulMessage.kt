@@ -89,7 +89,9 @@ fun SuccessfulMessage(
             Text(text = text,
                 style = Theme.typography.captionRegular,
                 color = Color.White,
-                textAlign = TextAlign.Center)
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(top = 21.dp))
             MainButton(
                 modifier = Modifier.padding(top = 33.dp),
                 text = buttonText

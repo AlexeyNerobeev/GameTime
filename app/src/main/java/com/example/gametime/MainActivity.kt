@@ -14,12 +14,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.example.gametime.presentation.CombatInformation.CombatInformationScreen
+import com.example.gametime.presentation.DiscoverCombats.DiscoverCombatsScreen
+import com.example.gametime.presentation.GameImage.GameImageScreen
 import com.example.gametime.presentation.Landing.LandingScreen
 import com.example.gametime.presentation.OnBoard.OnBoardScreen
+import com.example.gametime.presentation.PlayerInformation.PlayerInformationScreen
 import com.example.gametime.presentation.Registration.RegistrationScreen
 import com.example.gametime.presentation.ScheduleGame.ScheduleGameScreen
 import com.example.gametime.presentation.SignIn.SignInScreen
 import com.example.gametime.presentation.Splash.SplashScreen
+import com.example.gametime.presentation.Statistics.StatisticsScreen
 import com.example.gametime.ui.theme.GameTimeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,6 +58,23 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<Navigation.ScheduleGame> {
                         ScheduleGameScreen(navController)
+                    }
+                    composable<Navigation.DiscoverCombats> {
+                        DiscoverCombatsScreen(navController)
+                    }
+                    composable<Navigation.CombatInfo> { backStackEntry ->
+                        val route = backStackEntry.toRoute<Navigation.CombatInfo>()
+                        CombatInformationScreen(navController, route.value)
+                    }
+                    composable<Navigation.PlayerInfo> {
+                        PlayerInformationScreen(navController)
+                    }
+                    composable<Navigation.Statistics> {
+                        StatisticsScreen(navController)
+                    }
+                    composable<Navigation.GameImage> { backStackEntry ->
+                        val route = backStackEntry.toRoute<Navigation.GameImage>()
+                        GameImageScreen(navController, route.gameId, route.winningPrice)
                     }
                 }
             }
